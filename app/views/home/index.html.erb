@@ -1,0 +1,10 @@
+<h1>ガンダム視聴管理アプリ</h1>
+
+<h2>おすすめ作品</h2>
+<ul>
+  <% @recommended_works.each do |work| %>
+    <li><%= link_to work.title, work_path(work) %> (おすすめ度: <%= work.recommended %>)</li>
+  <% end %>
+</ul>
+
+<%= link_to "作品一覧を見る", works_path, class: "btn btn-primary" %>

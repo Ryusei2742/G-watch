@@ -1,0 +1,11 @@
+<h1>作品一覧</h1>
+
+<div class="works-list">
+  <% @works.each do |work| %>
+    <div class="work-item" style="margin-bottom: 20px;">
+      <%= image_tag("thumbnails/#{work.thumbnail}", size: "200x120", alt: "#{work.title}のサムネイル") if work.thumbnail.present? %>
+      <h2><%= link_to work.title, work_path(work) %></h2>
+      <p>初心者へのおすすめ度：<strong><%= work.recommended %></strong></p>
+    </div>
+  <% end %>
+</div>

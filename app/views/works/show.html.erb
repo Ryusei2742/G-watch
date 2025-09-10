@@ -1,0 +1,100 @@
+<!-- app/views/works/show.html.erb -->
+<div class="work-show">
+  <div class="hero">
+    <div class="thumb">
+      <% if @work.thumbnail.present? %>
+        <%= image_tag("thumbnails/#{@work.thumbnail}", alt: "#{@work.title} サムネ") %>
+      <% else %>
+        <div class="thumb--placeholder">No Image</div>
+      <% end %>
+    </div>
+
+    <div class="meta">
+      <h1 class="title"><%= @work.title %></h1>
+      <p class="sub">
+        <span><strong>シリーズ:</strong> <%= @work.series.presence || '-' %></span>
+        <span><strong>公開年:</strong> <%= @work.year.presence || '-' %></span>
+      </p>
+
+      <p class="recommended">
+        <strong>初心者おすすめ度:</strong>
+        <% if @work.recommended.present? %>
+          <%= number_with_precision(@work.recommended, precision: 1) %> / 5.0
+        <% else %>
+          未設定
+        <% end %>
+      </p>
+
+      <p class="avg-rating">
+        <strong>平均評価(レビュー):</strong>
+        <% if @avg_rating.present? %>
+          <%= @avg_rating %> / 5.0
+          <span class="stars"><%= '★' * @avg_rating.to_i %><%= '☆' * (5 - @avg_rating.to_i) %></span>
+        <% else %>
+          まだレビューがありません
+        <% end %>
+      </p>
+    </div>
+  </div>
+
+  <div class="description">
+    <h2>作品説明</h2>
+    <%= @work.description.present? ? simple_format(@work.description) : '説明はまだありません。' %>
+  </div>
+
+  <div class="reviews">
+    <h2>レビュー</h2>
+
+    <% if @reviews.any? %>
+      <ul class="review-list">
+        <% @reviews.each do |r| %>
+          <li class="review-item">
+            <div class="review-head">
+              <span class="rating">評価: <%= r.rating || '-' %> / 5</span>
+              <span class="status badge <%= r.status %>"><%= r.status.presence || '未設定' %></span>
+              <span class="author">
+                ユーザーID: <%= r.user_id || '-' %>
+              </span>
+              <span class="date"><%= l r.created_at, format: :short %></span>
+            </div>
+            <div class="review-body">
+              <%= r.comment.present? ? simple_format(r.comment) : 'コメントなし' %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>まだレビューはありません。</p>
+    <% end %>
+  </div>
+
+  <div class="review-form">
+    <h3>レビューを投稿する</h3>
+    <%= form_with model: [@work, @review], local: true do |f| %>
+      <!-- 認証導入前の暫定: 手動でユーザーID入力 or テスト用固定 -->
+      <div class="field">
+        <%= f.label :user_id, 'ユーザーID（暫定）' %>
+        <%= f.number_field :user_id, min: 1, step: 1, value: User.first&.id %>
+      </div>
+
+      <div class="field">
+        <%= f.label :status, 'ステータス' %>
+        <%= f.select :status, [['視聴予定', 'planned'], ['視聴済み', 'watched']], include_blank: '選択してください' %>
+      </div>
+
+      <div class="field">
+        <%= f.label :rating, '評価(1〜5)' %>
+        <%= f.number_field :rating, min: 1, max: 5, step: 1 %>
+      </div>
+
+      <div class="field">
+        <%= f.label :comment, 'コメント' %>
+        <%= f.text_area :comment, rows: 4 %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit '投稿する', class: 'btn btn-primary' %>
+      </div>
+    <% end %>
+  </div>
+</div>

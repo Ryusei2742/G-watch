@@ -64,3 +64,5 @@ gem 'aws-sdk-s3', '~> 1'
 
 # gem 'concurrent-ruby', '1.3.4'
 # gem 'logger'
+
+gem "webpacker", "~> 5.4"
