@@ -1,0 +1,46 @@
+<%= form_with(model: work, local: true) do |form| %>
+  <% if work.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(work.errors.count, "error") %> prohibited this work from being saved:</h2>
+      <ul>
+        <% work.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :title, "タイトル" %><br>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :description, "説明" %><br>
+    <%= form.text_area :description %>
+  </div>
+
+  <div>
+    <%= form.label :year, "公開年" %><br>
+    <%= form.number_field :year %>
+  </div>
+
+  <div>
+    <%= form.label :series, "シリーズ" %><br>
+    <%= form.text_field :series %>
+  </div>
+
+  <div>
+    <%= form.label :recommended, "おすすめ度 (0〜5)" %><br>
+    <%= form.number_field :recommended, step: 0.1 %>
+  </div>
+
+  <div>
+    <%= form.label :thumbnail, "サムネイルURL" %><br>
+    <%= form.text_field :thumbnail %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

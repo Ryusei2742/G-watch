@@ -1,2 +1,5 @@
-<h1>Works#new</h1>
-<p>Find me in app/views/works/new.html.erb</p>
+<h1>作品を登録する</h1>
+
+<%= render 'form', work: @work %>
+
+<%= link_to '一覧に戻る', works_path %>
