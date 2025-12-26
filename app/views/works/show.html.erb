@@ -1,4 +1,3 @@
-<!-- app/views/works/show.html.erb -->
 <div class="work-show">
   <div class="hero">
     <div class="thumb">
@@ -68,15 +67,11 @@
     <% end %>
   </div>
 
-  <div class="review-form">
-    <h3>レビューを投稿する</h3>
-    <%= form_with model: [@work, @review], local: true do |f| %>
-      <!-- 認証導入前の暫定: 手動でユーザーID入力 or テスト用固定 -->
-      <div class="field">
-        <%= f.label :user_id, 'ユーザーID（暫定）' %>
-        <%= f.number_field :user_id, min: 1, step: 1, value: User.first&.id %>
-      </div>
+<div class="review-form">
+  <h3>レビューを投稿する</h3>
 
+  <% if logged_in? %>
+    <%= form_with model: [@work, @review], local: true do |f| %>
       <div class="field">
         <%= f.label :status, 'ステータス' %>
         <%= f.select :status, [['視聴予定', 'planned'], ['視聴済み', 'watched']], include_blank: '選択してください' %>
@@ -96,5 +91,8 @@
         <%= f.submit '投稿する', class: 'btn btn-primary' %>
       </div>
     <% end %>
-  </div>
+  <% else %>
+    <p>レビューを投稿するにはログインが必要です。</p>
+    <%= link_to 'ログインへ', login_path, class: 'btn btn-primary' %>
+  <% end %>
 </div>
