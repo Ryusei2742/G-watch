@@ -1,26 +1,49 @@
-# README
+# G-watch
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+ガンダムシリーズの作品を記録・レビューできる Web アプリです。
 
-Things you may want to cover:
+---
 
-* Ruby version
+## 概要
+- ガンダム作品の一覧・詳細表示
+- 作品ごとのレビュー投稿
+- ログインユーザーのみレビュー投稿可能
+- 平均評価・初心者向けおすすめ度の表示
 
-* System dependencies
+ポートフォリオ用の個人開発アプリです。
 
-* Configuration
+---
 
-* Database creation
+## 主な機能
+- ユーザー登録 / ログイン / ログアウト
+- 作品（Work）のCRUD
+- レビュー投稿（視聴予定 / 視聴済み、評価、コメント）
+- ログイン制御による投稿制限
 
-* Database initialization
+---
 
-* How to run the test suite
+## 使用技術
+- Ruby 3.x
+- Ruby on Rails 6.1
+- PostgreSQL
+- HTML / ERB / SCSS
+- セッション認証（has_secure_password）
 
-* Services (job queues, cache servers, search engines, etc.)
+---
 
-* Deployment instructions
+## 工夫した点
+- レビュー投稿時に `current_user` を使用し、user_id をフォームから渡さない設計
+- 未ログイン時は投稿フォームを非表示にし、ログイン導線を表示
+- 作品詳細ページでレビュー平均を自動計算
 
-* ...
+---
 
-# Gwatch
+## 今後の改善予定
+- 管理者のみ作品登録できる権限制御
+- UI / デザインの改善
+- seed データ整備など
+
+---
+
+## 作者
+- GitHub: Ryusei2742
