@@ -1,5 +1,6 @@
 class WorksController < ApplicationController
-  before_action :require_login, except: %i[index show]
+  # 作品の作成/編集/削除は admin のみに
+  before_action :require_admin, only: %i[new create edit update destroy]
   before_action :set_work, only: %i[show edit update destroy]
 
   def index
