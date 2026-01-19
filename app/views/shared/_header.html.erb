@@ -1,0 +1,18 @@
+<header style="padding: 1rem; background-color: #222; color: white;">
+  <nav style="display: flex; justify-content: space-between; align-items: center;">
+    <div>
+      <%= link_to "G-watch", root_path, style: "color: white; font-weight: bold;" %>
+      <%= link_to "作品一覧", works_path %>
+    </div>
+    <div>
+      <% if logged_in? %>
+      <%= link_to "レビュー一覧", "#" %>
+        <span><%= current_user.name %></span> |
+        <%= link_to "ログアウト", logout_path, method: :delete, style: "color: white;" %>
+      <% else %>
+        <%= link_to "ログイン", login_path, style: "color: white;" %> |
+        <%= link_to "ユーザー登録", signup_path, style: "color: white;" %>
+      <% end %>
+    </div>
+  </nav>
+</header>
