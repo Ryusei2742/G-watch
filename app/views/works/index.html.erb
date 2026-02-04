@@ -21,10 +21,8 @@
         </h2>
 
         <p>
-          初心者へのおすすめ度：<strong><%= work.recommended %></strong>
+          初心者へのおすすめ度：<strong><%= work.recommended ? 'おすすめ' : 'ー' %></strong>
         </p>
-
-        <%# ログイン機能を作った後で編集・削除機能追加 %>
 
       </div>
     <% end %>

@@ -6,9 +6,12 @@
     </div>
     <div>
       <% if logged_in? %>
-      <%= link_to "レビュー一覧", "#" %>
+        <%= link_to "レビュー一覧", "#" %>
         <span><%= current_user.name %></span> |
-        <%= link_to "ログアウト", logout_path, method: :delete, style: "color: white;" %>
+        <%= button_to "ログアウト", logout_path,
+              method: :delete,
+              form: { style: "display:inline" },
+              style: "color:white; background:none; border:none; padding:0; cursor:pointer;" %>
       <% else %>
         <%= link_to "ログイン", login_path, style: "color: white;" %> |
         <%= link_to "ユーザー登録", signup_path, style: "color: white;" %>
