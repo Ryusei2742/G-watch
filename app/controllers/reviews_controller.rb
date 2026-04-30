@@ -1,6 +1,10 @@
 class ReviewsController < ApplicationController
   before_action :require_login
 
+  def index
+    @reviews = current_user.reviews.includes(:work).order(created_at: :desc)
+  end
+
   def create
     @work = Work.find(params[:work_id])
     @review = @work.reviews.new(review_params)

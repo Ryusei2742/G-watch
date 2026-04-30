@@ -1,0 +1,25 @@
+<div class="reviews">
+  <h1>レビュー一覧</h1>
+
+  <% if @reviews.any? %>
+    <ul class="review-list">
+      <% @reviews.each do |review| %>
+        <li class="review-item">
+          <div class="review-head">
+            <span class="work-title">
+              作品: <%= link_to review.work.title, work_path(review.work) %>
+            </span>
+            <span class="rating">評価: <%= review.rating || '-' %> / 5</span>
+            <span class="status badge <%= review.status %>"><%= review.status.presence || '未設定' %></span>
+            <span class="date"><%= l review.created_at, format: :short %></span>
+          </div>
+          <div class="review-body">
+            <%= review.comment.present? ? simple_format(review.comment) : 'コメントなし' %>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>まだレビューはありません。</p>
+  <% end %>
+</div>

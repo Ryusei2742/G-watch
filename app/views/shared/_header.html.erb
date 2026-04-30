@@ -6,7 +6,7 @@
     </div>
     <div>
       <% if logged_in? %>
-        <%= link_to "レビュー一覧", "#" %>
+        <%= link_to "レビュー一覧", reviews_path %>
         <span><%= current_user.name %></span> |
         <%= button_to "ログアウト", logout_path,
               method: :delete,
