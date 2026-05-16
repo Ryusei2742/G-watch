@@ -10,6 +10,17 @@
 
     <div class="meta">
       <h1 class="title"><%= @work.title %></h1>
+
+      <% if logged_in? && current_user.admin? %>
+        <div class="admin-actions">
+          <%= link_to '編集', edit_work_path(@work), class: 'btn btn-primary' %>
+          <%= button_to '削除', work_path(@work),
+                method: :delete,
+                data: { confirm: 'この作品を削除しますか？' },
+                class: 'btn btn-danger' %>
+        </div>
+      <% end %>
+
       <p class="sub">
         <span><strong>シリーズ:</strong> <%= @work.series.presence || '-' %></span>
         <span><strong>公開年:</strong> <%= @work.year.presence || '-' %></span>
