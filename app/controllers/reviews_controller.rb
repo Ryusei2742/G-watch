@@ -1,5 +1,6 @@
 class ReviewsController < ApplicationController
   before_action :require_login
+  before_action :set_review, only: %i[destroy]
 
   def index
     @reviews = current_user.reviews.includes(:work).order(created_at: :desc)
@@ -20,7 +21,21 @@ class ReviewsController < ApplicationController
     end
   end
 
+  def destroy
+    work = @review.work
+    @review.destroy
+
+    redirect_back fallback_location: work_path(work), notice: 'レビューを削除しました。'
+  end
+
   private
+
+  def set_review
+    @review = Review.find(params[:id])
+    return if @review.user == current_user
+
+    redirect_to reviews_path, alert: 'このレビューを削除する権限がありません。'
+  end
 
   def review_params
     params.require(:review).permit(:status, :rating, :comment)

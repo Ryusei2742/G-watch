@@ -12,6 +12,11 @@
             <span class="rating">評価: <%= review.rating || '-' %> / 5</span>
             <span class="status badge <%= review.status %>"><%= review.status.presence || '未設定' %></span>
             <span class="date"><%= l review.created_at, format: :short %></span>
+            <%= button_to '削除', review_path(review),
+                  method: :delete,
+                  form: { class: 'review-delete-form' },
+                  data: { confirm: 'このレビューを削除しますか？' },
+                  class: 'btn btn-danger btn-sm' %>
           </div>
           <div class="review-body">
             <%= review.comment.present? ? simple_format(review.comment) : 'コメントなし' %>

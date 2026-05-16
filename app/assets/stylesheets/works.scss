@@ -296,6 +296,26 @@ a {
   }
 }
 
+.btn-danger {
+  background: #dc2626;
+  color: #fff;
+
+  &:hover {
+    background: #b91c1c;
+    text-decoration: none;
+  }
+}
+
+.btn-sm {
+  padding: 4px 10px;
+  border-radius: $radius-md;
+  font-size: $fs-xs;
+}
+
+.review-delete-form {
+  display: inline-flex;
+}
+
 .btn-ghost {
   background: transparent;
   color: var(--primary);

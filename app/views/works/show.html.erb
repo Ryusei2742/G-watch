@@ -55,6 +55,13 @@
                 ユーザーID: <%= r.user_id || '-' %>
               </span>
               <span class="date"><%= l r.created_at, format: :short %></span>
+              <% if logged_in? && r.user == current_user %>
+                <%= button_to '削除', review_path(r),
+                      method: :delete,
+                      form: { class: 'review-delete-form' },
+                      data: { confirm: 'このレビューを削除しますか？' },
+                      class: 'btn btn-danger btn-sm' %>
+              <% end %>
             </div>
             <div class="review-body">
               <%= r.comment.present? ? simple_format(r.comment) : 'コメントなし' %>

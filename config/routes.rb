@@ -15,5 +15,5 @@ Rails.application.routes.draw do
   end
 
   # マイレビュー一覧
-  resources :reviews, only: [:index]
+  resources :reviews, only: [:index, :destroy]
 end

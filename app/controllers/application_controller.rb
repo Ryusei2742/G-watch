@@ -19,6 +19,7 @@ class ApplicationController < ActionController::Base
 
   def require_admin
     require_login
+    return if performed?
     return if current_user&.admin?
 
     redirect_to root_path, alert: 'この操作を行う権限がありません。'
