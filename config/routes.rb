@@ -13,4 +13,7 @@ Rails.application.routes.draw do
   resources :works do
     resources :reviews, only: [:create]
   end
+
+  # マイレビュー一覧
+  resources :reviews, only: [:index, :destroy]
 end

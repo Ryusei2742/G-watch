@@ -1,2 +1,5 @@
-<h1>Works#edit</h1>
-<p>Find me in app/views/works/edit.html.erb</p>
+<h1>作品を編集する</h1>
+
+<%= render 'form', work: @work %>
+
+<%= link_to '詳細に戻る', work_path(@work) %>
