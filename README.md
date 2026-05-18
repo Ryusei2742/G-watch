@@ -121,6 +121,35 @@ model spec の実行例です。
 bundle exec rspec spec/models/review_spec.rb
 ```
 
+## Render デプロイ手順
+
+Render の Free プランと PostgreSQL を利用する場合は、`render.yaml` を使って Web Service と Database を作成します。
+
+事前に変更内容を GitHub に push します。
+
+```bash
+git add .
+git commit -m "Add Render deployment settings"
+git push origin main
+```
+
+Render Dashboard で Blueprint を作成し、このリポジトリを選択します。`render.yaml` により、以下の設定が使われます。
+
+- Build Command: `./bin/render-build.sh`
+- Start Command: `bundle exec rails server`
+- Database: Render PostgreSQL Free plan
+
+環境変数 `RAILS_MASTER_KEY` は Render Dashboard で手動設定します。値にはローカルの `config/master.key` の内容を設定してください。
+
+初回デプロイ後は、以下の動作を確認します。
+
+- トップページが表示されること
+- 作品一覧・作品詳細が表示されること
+- ログインできること
+- レビュー投稿ができること
+
+Render の Free プランでは、一定時間アクセスがないと Web Service がスリープします。また、Free PostgreSQL には利用期限があります。継続公開する場合は有料プランへの移行を検討してください。
+
 ## 工夫した点
 
 - レビュー投稿時に `user_id` をフォームから受け取らず、`current_user` から紐付ける設計にしました。
