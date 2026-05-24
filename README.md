@@ -1,12 +1,18 @@
 # G-watch
 
-G-watch は、ガンダムシリーズ作品の情報を管理し、ログインユーザーが作品ごとにレビューを投稿できる Web アプリです。
+G-watch は、ガンダムシリーズ作品の情報を管理し、ユーザーごとにレビューを投稿できる Web アプリです。
 
-作品の一覧・詳細表示、レビュー投稿、マイレビュー確認、管理者による作品管理を行えます。Rails の基本的な CRUD、セッション認証、権限制御を中心に実装した個人開発ポートフォリオです。
+作品一覧・詳細表示、レビュー投稿、マイレビュー確認、管理者による作品管理機能を実装しています。
+
+Rails の CRUD、認証、権限制御を中心に開発した個人開発ポートフォリオです。
 
 ## アプリURL
 
 https://g-watch.onrender.com
+
+※ Render Freeプランを利用しているため、初回アクセス時は起動まで数十秒かかる場合があります。
+
+---
 
 ## テスト用アカウント
 
@@ -20,13 +26,37 @@ https://g-watch.onrender.com
 - Email: `admin@example.com`
 - Password: `password`
 
+---
+
 ## 制作背景
 
-Rails の CRUD、認証、権限制御を実践的に学ぶことを目的として制作しました。
+ガンダムシリーズは作品数が多く、シリーズごとの整理や「どの作品から見るべきか」を把握しづらいと感じていました。
 
-題材には自分の興味関心であるガンダムシリーズを選び、作品情報の管理とレビュー機能を組み合わせたアプリとして設計しました。
+また、作品ごとの感想や評価をまとめて管理し、他ユーザーのレビューも参考にできるサービスがあれば便利だと考え、本アプリを制作しました。
+
+G-watch では、作品情報の一覧・詳細表示だけでなく、ユーザーごとのレビュー投稿機能や、管理者による作品管理機能を実装しています。
+
+Rails の CRUD、認証、権限制御などの基礎技術を活用しながら、実際にユーザーが利用することを意識して開発しました。
+
+---
 
 ## 主な機能
+
+### トップページ
+
+※ 画像追加予定
+
+### 作品一覧・作品詳細表示
+
+※ 画像追加予定
+
+### レビュー投稿機能
+
+※ 画像追加予定
+
+### 管理者機能
+
+※ 画像追加予定
 
 - ユーザー登録 / ログイン / ログアウト
 - 作品一覧・作品詳細の閲覧
@@ -37,16 +67,22 @@ Rails の CRUD、認証、権限制御を実践的に学ぶことを目的とし
 - 作品詳細でレビュー平均評価を表示
 - 未ログイン時のレビュー投稿制限
 
+---
+
 ## 使用技術
 
-- Ruby `3.3.3`
-- Ruby on Rails `6.1`
-- PostgreSQL
-- ERB / SCSS
-- Webpacker
-- bcrypt / `has_secure_password`
-- RSpec / FactoryBot
-- Render
+| Category | Technology |
+|---|---|
+| Backend | Ruby 3.3.3 / Ruby on Rails 6.1 |
+| Database | PostgreSQL |
+| Frontend | ERB / SCSS |
+| JavaScript | Webpacker |
+| Authentication | bcrypt / has_secure_password |
+| Test | RSpec / FactoryBot |
+| Infrastructure | Render |
+| Version Control | Git / GitHub |
+
+---
 
 ## テーブル概要
 
@@ -54,60 +90,69 @@ Rails の CRUD、認証、権限制御を実践的に学ぶことを目的とし
 
 ユーザー情報、認証情報、管理者フラグを保持します。
 
-主なカラム:
+| Column | Type |
+|---|---|
+| name | string |
+| email | string |
+| password_digest | string |
+| admin | boolean |
 
-- `name`
-- `email`
-- `password_digest`
-- `admin`
+---
 
 ### works
 
 作品情報を保持します。
 
-主なカラム:
+| Column | Type |
+|---|---|
+| title | string |
+| description | text |
+| year | integer |
+| series | string |
+| recommended | boolean |
+| thumbnail | string |
 
-- `title`
-- `description`
-- `year`
-- `series`
-- `recommended`
-- `thumbnail`
+---
 
 ### reviews
 
 ユーザーが作品に投稿したレビューを保持します。
 
-主なカラム:
+| Column | Type |
+|---|---|
+| user_id | references |
+| work_id | references |
+| rating | integer |
+| comment | text |
 
-- `user_id`
-- `work_id`
-- `status`
-- `rating`
-- `comment`
+---
 
-### 関連
+## テーブル関連
 
-- `User has_many reviews`
-- `Work has_many reviews`
-- `Review belongs_to user`
-- `Review belongs_to work`
+- User has_many reviews
+- Work has_many reviews
+- Review belongs_to user
+- Review belongs_to work
+
+---
 
 ## セットアップ方法
+
+### リポジトリを clone
 
 ```bash
 git clone https://github.com/Ryusei2742/G-watch.git
 cd G-watch
 ```
 
-依存関係をインストールします。
+### 依存関係をインストール
 
 ```bash
 bundle install
 yarn install
 ```
 
-データベースを作成し、マイグレーションと seed を実行します。
+### データベース作成・マイグレーション
 
 ```bash
 bundle exec rails db:create
@@ -115,78 +160,92 @@ bundle exec rails db:migrate
 bundle exec rails db:seed
 ```
 
-ローカルサーバーを起動します。
+### ローカルサーバー起動
 
 ```bash
 bundle exec rails server
 ```
 
-ブラウザで `http://localhost:3000` を開きます。
+ブラウザで以下へアクセスします。
+
+```text
+http://localhost:3000
+```
+
+---
 
 ## テスト実行方法
 
-全テストを実行します。
+### 全テスト実行
 
 ```bash
 bundle exec rspec
 ```
 
-request spec の実行例です。
+### request spec 実行例
 
 ```bash
 bundle exec rspec spec/requests/works_spec.rb
 bundle exec rspec spec/requests/reviews_spec.rb
 ```
 
-model spec の実行例です。
+### model spec 実行例
 
 ```bash
 bundle exec rspec spec/models/review_spec.rb
 ```
 
+---
+
 ## Render デプロイ手順
 
-Render の Free プランと PostgreSQL を利用する場合は、`render.yaml` を使って Web Service と Database を作成します。
+Render の Free プランと PostgreSQL を利用してデプロイしています。
 
-事前に変更内容を GitHub に push します。
+### デプロイ手順
 
 ```bash
 git add .
-git commit -m "Add Render deployment settings"
+git commit -m "Deploy settings"
 git push origin main
 ```
 
-Render Dashboard で Blueprint を作成し、このリポジトリを選択します。`render.yaml` により、以下の設定が使われます。
+Render Dashboard で Blueprint を作成し、`render.yaml` を利用して以下を構築します。
+
+- Web Service
+- PostgreSQL Database
+
+### 使用設定
 
 - Build Command: `./bin/render-build.sh`
 - Start Command: `bundle exec rails server`
-- Database: Render PostgreSQL Free plan
 
-環境変数 `RAILS_MASTER_KEY` は Render Dashboard で手動設定します。値にはローカルの `config/master.key` の内容を設定してください。
+### 環境変数
 
-初回デプロイ後は、以下の動作を確認します。
+```text
+RAILS_MASTER_KEY
+```
 
-- トップページが表示されること
-- 作品一覧・作品詳細が表示されること
-- ログインできること
-- レビュー投稿ができること
+には、ローカルの `config/master.key` の内容を設定します。
 
-Render の Free プランでは、一定時間アクセスがないと Web Service がスリープします。また、Free PostgreSQL には利用期限があります。継続公開する場合は有料プランへの移行を検討してください。
+---
 
 ## 工夫した点
 
 - レビュー投稿時に `user_id` をフォームから受け取らず、`current_user` から紐付ける設計にしました。
-- 作品の作成・編集・削除は管理者ユーザーに限定し、権限制御を実装しました。
+- 管理者ユーザーのみ作品の作成・編集・削除ができるよう権限制御を実装しました。
 - レビュー削除は投稿者本人のみ可能にしました。
 - 作品詳細ページでレビュー平均評価を計算して表示しました。
 - 未ログインユーザーにはレビュー投稿フォームではなくログイン導線を表示しました。
 - Render へのデプロイ時には Webpacker と Node.js 周りの依存関係問題を調査・修正し、本番環境で動作する構成に調整しました。
 
+---
+
 ## 今後の改善点
 
 - 作品検索・絞り込み機能の追加
-- バリデーションとエラーメッセージ表示の改善
-- UI / レスポンシブ対応の改善
-- README に ER 図画像を追加
-- テスト範囲の拡充
+- UI / UX の改善
+- レスポンシブデザイン強化
 - ページネーション機能の追加
+- テスト範囲の拡充
+- README への ER図追加
+- 画像アップロード機能改善
