@@ -16,6 +16,7 @@ admin = User.create!(
 
 # 一般ユーザー数人
 users = [
+  { name: 'ユーザー', email: 'user@example.com' },
   { name: 'アムロ', email: 'amuro@example.com' },
   { name: 'シャア', email: 'char@example.com' },
   { name: 'カミーユ', email: 'kamille@example.com' }
