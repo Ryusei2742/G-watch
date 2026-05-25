@@ -1,71 +1,128 @@
 <div class="work-show">
-  <div class="hero">
+  <% title = @work.title.to_s %>
+  <% placeholder_label =
+    if title.include?('機動戦士ガンダム')
+      '初代'
+    elsif title.include?('Zガンダム')
+      'Z'
+    elsif title.include?('SEED')
+      'SEED'
+    elsif title.include?('鉄血')
+      '鉄血'
+    elsif title.include?('水星')
+      '水星'
+    else
+      title.each_char.first(2).join.presence || 'GW'
+    end %>
+  <% placeholder_tone =
+    if title.include?('機動戦士ガンダム')
+      'uc'
+    elsif title.include?('Zガンダム')
+      'zeta'
+    elsif title.include?('SEED')
+      'seed'
+    elsif title.include?('鉄血')
+      'ibo'
+    elsif title.include?('水星')
+      'witch'
+    else
+      'default'
+    end %>
+
+  <div class="work-hero">
     <div class="thumb">
       <% if @work.thumbnail.present? %>
         <%= image_tag("thumbnails/#{@work.thumbnail}", alt: "#{@work.title} サムネ") %>
       <% else %>
-        <div class="thumb--placeholder">No Image</div>
+        <div class="thumb--placeholder thumb--placeholder-<%= placeholder_tone %>">
+          <span class="thumb--placeholder-mark"><%= placeholder_label %></span>
+        </div>
       <% end %>
     </div>
 
     <div class="meta">
+      <p class="eyebrow"><%= @work.series.presence || "Series" %></p>
       <h1 class="title"><%= @work.title %></h1>
 
       <% if logged_in? && current_user.admin? %>
         <div class="admin-actions">
-          <%= link_to '編集', edit_work_path(@work), class: 'btn btn-primary' %>
+          <%= link_to '編集', edit_work_path(@work), class: 'btn btn-ghost btn-admin' %>
           <%= button_to '削除', work_path(@work),
                 method: :delete,
                 data: { confirm: 'この作品を削除しますか？' },
-                class: 'btn btn-danger' %>
+                class: 'btn btn-danger btn-admin' %>
         </div>
       <% end %>
 
-      <p class="sub">
-        <span><strong>シリーズ:</strong> <%= @work.series.presence || '-' %></span>
-        <span><strong>公開年:</strong> <%= @work.year.presence || '-' %></span>
-      </p>
-
-      <p class="recommended">
-        <strong>初心者おすすめ度:</strong>
-        <% if @work.recommended.present? %>
-          <%= number_with_precision(@work.recommended, precision: 1) %> / 5.0
-        <% else %>
-          未設定
-        <% end %>
-      </p>
-
-      <p class="avg-rating">
-        <strong>平均評価(レビュー):</strong>
-        <% if @avg_rating.present? %>
-          <%= @avg_rating %> / 5.0
-          <span class="stars"><%= '★' * @avg_rating.to_i %><%= '☆' * (5 - @avg_rating.to_i) %></span>
-        <% else %>
-          まだレビューがありません
-        <% end %>
-      </p>
+      <div class="detail-metrics">
+        <div class="metric-card">
+          <span>シリーズ</span>
+          <strong><%= @work.series.presence || '-' %></strong>
+        </div>
+        <div class="metric-card">
+          <span>公開年</span>
+          <strong><%= @work.year.presence || '-' %></strong>
+        </div>
+        <div class="metric-card">
+          <span>おすすめ度</span>
+          <strong>
+            <% if @work.recommended.present? %>
+              <%= number_with_precision(@work.recommended, precision: 1) %> / 5.0
+            <% else %>
+              未設定
+            <% end %>
+          </strong>
+        </div>
+        <div class="metric-card">
+          <span>平均評価</span>
+          <strong>
+            <% if @avg_rating.present? %>
+              <%= @avg_rating %> / 5.0
+            <% else %>
+              未評価
+            <% end %>
+          </strong>
+          <% if @avg_rating.present? %>
+            <small class="stars"><%= '★' * @avg_rating.to_i %><%= '☆' * (5 - @avg_rating.to_i) %></small>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="description">
-    <h2>作品説明</h2>
+  <section class="description content-card">
+    <div class="section-heading">
+      <p class="eyebrow">Story</p>
+      <h2>作品説明</h2>
+    </div>
     <%= @work.description.present? ? simple_format(@work.description) : '説明はまだありません。' %>
-  </div>
+  </section>
 
-  <div class="reviews">
-    <h2>レビュー</h2>
+  <section class="reviews content-card">
+    <div class="section-heading">
+      <p class="eyebrow">Reviews</p>
+      <h2>レビュー</h2>
+    </div>
 
     <% if @reviews.any? %>
       <ul class="review-list">
         <% @reviews.each do |r| %>
           <li class="review-item">
             <div class="review-head">
-              <span class="rating">評価: <%= r.rating || '-' %> / 5</span>
-              <span class="status badge <%= r.status %>"><%= r.status.presence || '未設定' %></span>
-              <span class="author">
-                ユーザーID: <%= r.user_id || '-' %>
+              <div class="review-author">
+                <span class="review-avatar"><%= (r.user&.name.presence || 'U').first %></span>
+                <span><%= r.user&.name.presence || 'ユーザー' %></span>
+              </div>
+              <span class="rating">
+                <% if r.rating.present? %>
+                  <span class="review-stars"><%= '★' * r.rating %><%= '☆' * (5 - r.rating) %></span>
+                  <span><%= r.rating %> / 5</span>
+                <% else %>
+                  評価なし
+                <% end %>
               </span>
-              <span class="date"><%= l r.created_at, format: :short %></span>
+              <span class="status badge <%= r.status %>"><%= r.status.presence || '未設定' %></span>
+              <span class="date"><%= l r.created_at, format: :short %> 投稿</span>
               <% if logged_in? && r.user == current_user %>
                 <%= button_to '削除', review_path(r),
                       method: :delete,
@@ -81,36 +138,42 @@
         <% end %>
       </ul>
     <% else %>
-      <p>まだレビューはありません。</p>
+      <p class="empty-message">まだレビューはありません。</p>
     <% end %>
-  </div>
+  </section>
 
-<div class="review-form">
-  <h3>レビューを投稿する</h3>
+  <section class="review-form content-card">
+    <div class="section-heading">
+      <p class="eyebrow">Your Review</p>
+      <h3>レビューを投稿する</h3>
+    </div>
 
-  <% if logged_in? %>
-    <%= form_with model: [@work, @review], local: true do |f| %>
-      <div class="field">
-        <%= f.label :status, 'ステータス' %>
-        <%= f.select :status, [['視聴予定', 'planned'], ['視聴済み', 'watched']], include_blank: '選択してください' %>
-      </div>
+    <% if logged_in? %>
+      <%= form_with model: [@work, @review], local: true do |f| %>
+        <div class="field">
+          <%= f.label :status, 'ステータス' %>
+          <%= f.select :status, [['視聴予定', 'planned'], ['視聴済み', 'watched']], include_blank: '選択してください' %>
+        </div>
 
-      <div class="field">
-        <%= f.label :rating, '評価(1〜5)' %>
-        <%= f.number_field :rating, min: 1, max: 5, step: 1 %>
-      </div>
+        <div class="field">
+          <%= f.label :rating, '評価(1〜5)' %>
+          <%= f.number_field :rating, min: 1, max: 5, step: 1 %>
+        </div>
 
-      <div class="field">
-        <%= f.label :comment, 'コメント' %>
-        <%= f.text_area :comment, rows: 4 %>
-      </div>
+        <div class="field">
+          <%= f.label :comment, 'コメント' %>
+          <%= f.text_area :comment, rows: 4 %>
+        </div>
 
-      <div class="actions">
-        <%= f.submit '投稿する', class: 'btn btn-primary' %>
+        <div class="actions">
+          <%= f.submit '投稿する', class: 'btn btn-primary' %>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="login-prompt">
+        <p>ログインすると、この作品への視聴ステータス・評価・コメントを投稿できます。</p>
+        <%= link_to 'ログインへ', login_path, class: 'btn btn-primary' %>
       </div>
     <% end %>
-  <% else %>
-    <p>レビューを投稿するにはログインが必要です。</p>
-    <%= link_to 'ログインへ', login_path, class: 'btn btn-primary' %>
-  <% end %>
+  </section>
 </div>

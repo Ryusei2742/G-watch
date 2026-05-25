@@ -1,20 +1,21 @@
-<header style="padding: 1rem; background-color: #222; color: white;">
-  <nav style="display: flex; justify-content: space-between; align-items: center;">
-    <div>
-      <%= link_to "G-watch", root_path, style: "color: white; font-weight: bold;" %>
-      <%= link_to "作品一覧", works_path %>
+<header class="site-header">
+  <nav class="site-header__nav">
+    <div class="site-header__brand">
+      <%= link_to "G-watch", root_path, class: "brand-link" %>
+      <%= link_to "作品一覧", works_path, class: "nav-link" %>
     </div>
-    <div>
+
+    <div class="site-header__actions">
       <% if logged_in? %>
-        <%= link_to "レビュー一覧", reviews_path %>
-        <span><%= current_user.name %></span> |
+        <%= link_to "レビュー一覧", reviews_path, class: "nav-link" %>
+        <span class="user-chip"><%= current_user.name %></span>
         <%= button_to "ログアウト", logout_path,
               method: :delete,
-              form: { style: "display:inline" },
-              style: "color:white; background:none; border:none; padding:0; cursor:pointer;" %>
+              form: { class: "logout-form" },
+              class: "nav-button" %>
       <% else %>
-        <%= link_to "ログイン", login_path, style: "color: white;" %> |
-        <%= link_to "ユーザー登録", signup_path, style: "color: white;" %>
+        <%= link_to "ログイン", login_path, class: "nav-link" %>
+        <%= link_to "ユーザー登録", signup_path, class: "nav-link nav-link--primary" %>
       <% end %>
     </div>
   </nav>

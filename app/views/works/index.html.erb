@@ -1,32 +1,85 @@
-<h1>作品一覧</h1>
+<div class="works-index">
+  <div class="page-heading">
+    <div>
+      <p class="eyebrow">Works</p>
+      <h1>作品一覧</h1>
+      <p>登録されているガンダム作品を確認できます。</p>
+    </div>
 
-<% if logged_in? && current_user.admin? %>
-  <div style="margin-bottom: 20px;">
-    <%= link_to '新しい作品を登録する', new_work_path, class: 'btn btn-primary' %>
-  </div>
-<% end %>
-
-<div class="works-list">
-  <% if @works.any? %>
-    <% @works.each do |work| %>
-      <div class="work-item" style="margin-bottom: 20px;">
-
-        <%# サムネイル画像 %>
-        <% if work.thumbnail.present? %>
-          <%= image_tag(work.thumbnail, size: "200x120", alt: "#{work.title}のサムネイル") %>
-        <% end %>
-
-        <h2>
-          <%= link_to work.title, work_path(work) %>
-        </h2>
-
-        <p>
-          初心者へのおすすめ度：<strong><%= work.recommended ? 'おすすめ' : 'ー' %></strong>
-        </p>
-
-      </div>
+    <% if logged_in? && current_user.admin? %>
+      <%= link_to '新しい作品を登録する', new_work_path, class: 'btn btn-primary' %>
     <% end %>
-  <% else %>
-    <p>まだ作品が登録されていません。</p>
-  <% end %>
+  </div>
+
+  <div class="works-grid">
+    <% if @works.any? %>
+      <% @works.each do |work| %>
+        <% title = work.title.to_s %>
+        <% placeholder_label =
+          if title.include?('機動戦士ガンダム')
+            '初代'
+          elsif title.include?('Zガンダム')
+            'Z'
+          elsif title.include?('SEED')
+            'SEED'
+          elsif title.include?('鉄血')
+            '鉄血'
+          elsif title.include?('水星')
+            '水星'
+          else
+            title.each_char.first(2).join.presence || 'GW'
+          end %>
+        <% placeholder_tone =
+          if title.include?('機動戦士ガンダム')
+            'uc'
+          elsif title.include?('Zガンダム')
+            'zeta'
+          elsif title.include?('SEED')
+            'seed'
+          elsif title.include?('鉄血')
+            'ibo'
+          elsif title.include?('水星')
+            'witch'
+          else
+            'default'
+          end %>
+        <article class="work-card">
+          <%= link_to work_path(work), class: ["work-card__image", ("work-card__image--placeholder work-card__image--#{placeholder_tone}" unless work.thumbnail.present?)].compact.join(" ") do %>
+            <% if work.thumbnail.present? %>
+              <%= image_tag("thumbnails/#{work.thumbnail}", alt: "#{work.title}のサムネイル") %>
+            <% else %>
+              <span class="work-card__placeholder">
+                <span class="work-card__placeholder-mark"><%= placeholder_label %></span>
+              </span>
+            <% end %>
+          <% end %>
+
+          <div class="work-card__body">
+            <div class="work-card__topline">
+              <span class="work-card__series"><%= work.series.presence || "シリーズ未設定" %></span>
+              <span class="work-card__year"><%= work.year.presence || "-" %></span>
+            </div>
+
+            <h2><%= link_to work.title.presence || "タイトル未設定", work_path(work) %></h2>
+
+            <div class="work-card__footer">
+              <span class="score-pill">
+                おすすめ度
+                <strong>
+                  <% if work.recommended.present? %>
+                    <%= number_with_precision(work.recommended, precision: 1) %>
+                  <% else %>
+                    -
+                  <% end %>
+                </strong>
+              </span>
+              <%= link_to "詳細を見る", work_path(work), class: "work-card__more" %>
+            </div>
+          </div>
+        </article>
+      <% end %>
+    <% else %>
+      <p class="empty-message">まだ作品が登録されていません。</p>
+    <% end %>
+  </div>
 </div>
