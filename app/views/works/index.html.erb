@@ -11,6 +11,14 @@
     <% end %>
   </div>
 
+  <div class="works-toolbar">
+    <p><%= @works.size %>作品を表示中</p>
+    <div class="sort-tabs" aria-label="作品の並び順">
+      <%= link_to '新しい順', works_path(sort: 'newest'), class: ['sort-tab', ('active' if @sort_order == 'newest')].compact.join(' ') %>
+      <%= link_to '古い順', works_path(sort: 'oldest'), class: ['sort-tab', ('active' if @sort_order == 'oldest')].compact.join(' ') %>
+    </div>
+  </div>
+
   <div class="works-grid">
     <% if @works.any? %>
       <% @works.each do |work| %>
@@ -26,6 +34,16 @@
             '鉄血'
           elsif title.include?('水星')
             '水星'
+          elsif title.include?('逆襲のシャア')
+            'CCA'
+          elsif title.include?('ガンダムUC')
+            'UC'
+          elsif title.include?('ガンダム00')
+            '00'
+          elsif title.include?('ガンダムW')
+            'W'
+          elsif title.include?('Gガンダム')
+            'G'
           else
             title.each_char.first(2).join.presence || 'GW'
           end %>
@@ -40,6 +58,16 @@
             'ibo'
           elsif title.include?('水星')
             'witch'
+          elsif title.include?('逆襲のシャア')
+            'cca'
+          elsif title.include?('ガンダムUC')
+            'unicorn'
+          elsif title.include?('ガンダム00')
+            'double-o'
+          elsif title.include?('ガンダムW')
+            'wing'
+          elsif title.include?('Gガンダム')
+            'fighter'
           else
             'default'
           end %>

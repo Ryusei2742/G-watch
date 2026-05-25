@@ -4,7 +4,10 @@ class WorksController < ApplicationController
   before_action :set_work, only: %i[show edit update destroy]
 
   def index
-    @works = Work.order(created_at: :desc)
+    @sort_order = params[:sort] == 'oldest' ? 'oldest' : 'newest'
+    direction = @sort_order == 'oldest' ? :asc : :desc
+
+    @works = Work.order(year: direction)
   end
 
   def show
