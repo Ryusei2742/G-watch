@@ -2,12 +2,16 @@
   <nav class="site-header__nav">
     <div class="site-header__brand">
       <%= link_to "G-watch", root_path, class: "brand-link" %>
-      <%= link_to "作品一覧", works_path, class: "nav-link" %>
+      <div class="site-header__links">
+        <%= link_to "作品一覧", works_path, class: "nav-link" %>
+        <% if logged_in? %>
+          <%= link_to "レビュー一覧", reviews_path, class: "nav-link" %>
+        <% end %>
+      </div>
     </div>
 
     <div class="site-header__actions">
       <% if logged_in? %>
-        <%= link_to "レビュー一覧", reviews_path, class: "nav-link" %>
         <span class="user-chip"><%= current_user.name %></span>
         <%= button_to "ログアウト", logout_path,
               method: :delete,

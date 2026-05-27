@@ -1,30 +1,71 @@
-<div class="reviews">
-  <h1>レビュー一覧</h1>
+<div class="reviews-index">
+  <div class="reviews-heading">
+    <p class="eyebrow">My Reviews</p>
+    <h1>レビュー一覧</h1>
+    <p>投稿したレビューを作品ごとに振り返れます。</p>
+  </div>
 
   <% if @reviews.any? %>
-    <ul class="review-list">
+    <ul class="my-review-list">
       <% @reviews.each do |review| %>
-        <li class="review-item">
-          <div class="review-head">
-            <span class="work-title">
-              作品: <%= link_to review.work.title, work_path(review.work) %>
-            </span>
-            <span class="rating">評価: <%= review.rating || '-' %> / 5</span>
-            <span class="status badge <%= review.status %>"><%= review.status.presence || '未設定' %></span>
-            <span class="date"><%= l review.created_at, format: :short %></span>
+        <% title = review.work.title.to_s %>
+        <% work_label =
+          if title.include?('機動戦士ガンダム')
+            '初代'
+          elsif title.include?('Zガンダム')
+            'Z'
+          elsif title.include?('SEED')
+            'SEED'
+          elsif title.include?('鉄血')
+            '鉄血'
+          elsif title.include?('水星')
+            '水星'
+          elsif title.include?('逆襲のシャア')
+            'CCA'
+          elsif title.include?('ガンダムUC')
+            'UC'
+          elsif title.include?('ガンダム00')
+            '00'
+          elsif title.include?('ガンダムW')
+            'W'
+          elsif title.include?('Gガンダム')
+            'G'
+          else
+            title.each_char.first(2).join.presence || 'GW'
+          end %>
+        <li class="my-review-card">
+          <div class="my-review-head">
+            <div class="my-review-work">
+              <span class="my-review-work-badge"><%= work_label %></span>
+              <%= link_to review.work.title, work_path(review.work), class: 'my-review-title' %>
+            </div>
             <%= button_to '削除', review_path(review),
                   method: :delete,
-                  form: { class: 'review-delete-form' },
+                  form: { class: 'my-review-delete-form' },
                   data: { confirm: 'このレビューを削除しますか？' },
-                  class: 'btn btn-danger btn-sm' %>
+                  class: 'my-review-delete' %>
           </div>
-          <div class="review-body">
+
+          <div class="my-review-meta">
+            <span class="my-review-rating">
+              <% if review.rating.present? %>
+                <span class="my-review-stars"><%= '★' * review.rating %><%= '☆' * (5 - review.rating) %></span>
+                <span><%= review.rating %> / 5</span>
+              <% else %>
+                評価なし
+              <% end %>
+            </span>
+            <span class="my-review-status <%= review.status %>"><%= review.status.presence || '未設定' %></span>
+            <span class="my-review-date"><%= l review.created_at, format: :short %></span>
+          </div>
+
+          <div class="my-review-body">
             <%= review.comment.present? ? simple_format(review.comment) : 'コメントなし' %>
           </div>
         </li>
       <% end %>
     </ul>
   <% else %>
-    <p>まだレビューはありません。</p>
+    <p class="empty-message">まだレビューはありません。</p>
   <% end %>
 </div>

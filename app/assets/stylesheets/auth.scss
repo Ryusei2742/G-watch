@@ -1,0 +1,125 @@
+/* Auth pages */
+
+.auth-page {
+  place-items: start center;
+  min-height: calc(100vh - 204px);
+  padding: 34px 16px 0;
+  background:
+    radial-gradient(circle at 72% 16%, rgba(37, 99, 235, 0.055), transparent 26%),
+    radial-gradient(circle at 24% 78%, rgba(129, 140, 248, 0.055), transparent 28%);
+}
+
+.auth-page .auth-card {
+  width: min(386px, 100%);
+  padding: 24px;
+  border-color: rgba(226, 232, 240, 0.86);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96));
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.065);
+}
+
+.auth-page .auth-card--signup {
+  width: min(408px, 100%);
+}
+
+.auth-page .auth-card__header {
+  margin-bottom: 17px;
+}
+
+.auth-page .auth-card__header h1 {
+  font-size: 1.66rem;
+}
+
+.auth-page .auth-card__header p:not(.eyebrow) {
+  margin-top: 7px;
+  font-size: 0.86rem;
+}
+
+.auth-page .auth-form {
+  gap: 11px;
+}
+
+.auth-page .auth-field label {
+  margin-bottom: 5px;
+  font-size: 0.84rem;
+}
+
+.auth-page .auth-field input {
+  min-height: 39px;
+  padding: 7px 11px;
+  border-color: rgba(203, 213, 225, 0.9);
+}
+
+.auth-page .auth-field input:hover {
+  border-color: rgba(148, 163, 184, 0.95);
+}
+
+.auth-page .auth-field input:focus {
+  border-color: rgba(37, 99, 235, 0.62);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.09);
+}
+
+.auth-page .auth-actions {
+  margin-top: 1px;
+}
+
+.auth-page .auth-submit {
+  min-height: 38px;
+  background: #1e40af;
+  box-shadow: 0 8px 18px rgba(30, 64, 175, 0.16);
+}
+
+.auth-page .auth-submit:hover {
+  background: var(--app-primary);
+  box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
+}
+
+.auth-page .auth-demo {
+  margin-top: 15px;
+  padding: 10px 11px;
+  border-color: rgba(37, 99, 235, 0.07);
+  background: rgba(37, 99, 235, 0.018);
+}
+
+.auth-page .auth-demo p {
+  margin-bottom: 6px;
+  font-size: 0.72rem;
+}
+
+.auth-page .auth-demo dl {
+  gap: 5px;
+}
+
+.auth-page .auth-demo dl div {
+  gap: 1px;
+}
+
+.auth-page .auth-demo dt {
+  font-size: 0.74rem;
+}
+
+.auth-page .auth-demo dd {
+  font-size: 0.72rem;
+  line-height: 1.42;
+}
+
+.auth-switch {
+  margin: 14px 0 0;
+  color: var(--app-muted);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.auth-switch a {
+  font-weight: 900;
+}
+
+@media (max-width: 840px) {
+  .auth-page {
+    padding: 24px 12px 0;
+  }
+
+  .auth-page .auth-card {
+    padding: 22px;
+  }
+}

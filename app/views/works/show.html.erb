@@ -11,6 +11,16 @@
       '鉄血'
     elsif title.include?('水星')
       '水星'
+    elsif title.include?('逆襲のシャア')
+      'CCA'
+    elsif title.include?('ガンダムUC')
+      'UC'
+    elsif title.include?('ガンダム00')
+      '00'
+    elsif title.include?('ガンダムW')
+      'W'
+    elsif title.include?('Gガンダム')
+      'G'
     else
       title.each_char.first(2).join.presence || 'GW'
     end %>
@@ -25,8 +35,27 @@
       'ibo'
     elsif title.include?('水星')
       'witch'
+    elsif title.include?('逆襲のシャア')
+      'cca'
+    elsif title.include?('ガンダムUC')
+      'unicorn'
+    elsif title.include?('ガンダム00')
+      'double-o'
+    elsif title.include?('ガンダムW')
+      'wing'
+    elsif title.include?('Gガンダム')
+      'fighter'
     else
       'default'
+    end %>
+  <% average_stars = @avg_rating.present? ? @avg_rating.to_f.round.clamp(0, 5) : nil %>
+  <% series_class =
+    if @work.series.to_s.include?('宇宙世紀')
+      'series-tag--uc'
+    elsif @work.series.to_s.include?('オルタナティブ')
+      'series-tag--alternative'
+    else
+      'series-tag--default'
     end %>
 
   <div class="work-hero">
@@ -41,7 +70,7 @@
     </div>
 
     <div class="meta">
-      <p class="eyebrow"><%= @work.series.presence || "Series" %></p>
+      <p class="series-tag series-tag--hero <%= series_class %>"><%= @work.series.presence || "Series" %></p>
       <h1 class="title"><%= @work.title %></h1>
 
       <% if logged_in? && current_user.admin? %>
@@ -55,36 +84,33 @@
       <% end %>
 
       <div class="detail-metrics">
-        <div class="metric-card">
-          <span>シリーズ</span>
-          <strong><%= @work.series.presence || '-' %></strong>
-        </div>
-        <div class="metric-card">
-          <span>公開年</span>
-          <strong><%= @work.year.presence || '-' %></strong>
-        </div>
-        <div class="metric-card">
-          <span>おすすめ度</span>
-          <strong>
-            <% if @work.recommended.present? %>
-              <%= number_with_precision(@work.recommended, precision: 1) %> / 5.0
-            <% else %>
-              未設定
-            <% end %>
-          </strong>
-        </div>
-        <div class="metric-card">
-          <span>平均評価</span>
-          <strong>
+        <div class="metric-card metric-card--rating">
+          <span>ユーザー平均評価</span>
+          <strong class="rating-summary">
             <% if @avg_rating.present? %>
-              <%= @avg_rating %> / 5.0
+              <span class="metric-stars"><%= '★' * average_stars %><%= '☆' * (5 - average_stars) %></span>
+              <span class="rating-summary__meta">
+                <span class="rating-summary__score"><%= @avg_rating %> / 5.0</span>
+                <span class="rating-summary__count">レビュー <%= @reviews.size %>件</span>
+              </span>
             <% else %>
               未評価
             <% end %>
           </strong>
-          <% if @avg_rating.present? %>
-            <small class="stars"><%= '★' * @avg_rating.to_i %><%= '☆' * (5 - @avg_rating.to_i) %></small>
+          <% unless @avg_rating.present? %>
+            <small>レビュー <%= @reviews.size %>件</small>
           <% end %>
+        </div>
+
+        <div class="detail-submetrics">
+          <div class="metric-card metric-card--subtle">
+            <span>シリーズ</span>
+            <strong><span class="series-tag <%= series_class %>"><%= @work.series.presence || '-' %></span></strong>
+          </div>
+          <div class="metric-card metric-card--subtle">
+            <span>公開年</span>
+            <strong><%= @work.year.presence || '-' %></strong>
+          </div>
         </div>
       </div>
     </div>
@@ -113,23 +139,25 @@
                 <span class="review-avatar"><%= (r.user&.name.presence || 'U').first %></span>
                 <span><%= r.user&.name.presence || 'ユーザー' %></span>
               </div>
-              <span class="rating">
+              <div class="review-rating">
                 <% if r.rating.present? %>
                   <span class="review-stars"><%= '★' * r.rating %><%= '☆' * (5 - r.rating) %></span>
                   <span><%= r.rating %> / 5</span>
                 <% else %>
                   評価なし
                 <% end %>
-              </span>
-              <span class="status badge <%= r.status %>"><%= r.status.presence || '未設定' %></span>
-              <span class="date"><%= l r.created_at, format: :short %> 投稿</span>
-              <% if logged_in? && r.user == current_user %>
-                <%= button_to '削除', review_path(r),
-                      method: :delete,
-                      form: { class: 'review-delete-form' },
-                      data: { confirm: 'このレビューを削除しますか？' },
-                      class: 'btn btn-danger btn-sm' %>
-              <% end %>
+              </div>
+              <div class="review-meta">
+                <span class="status badge <%= r.status %>"><%= r.status.presence || '未設定' %></span>
+                <span class="date"><%= l r.created_at, format: :short %> 投稿</span>
+                <% if logged_in? && r.user == current_user %>
+                  <%= button_to '削除', review_path(r),
+                        method: :delete,
+                        form: { class: 'review-delete-form' },
+                        data: { confirm: 'このレビューを削除しますか？' },
+                        class: 'btn btn-danger btn-sm' %>
+                <% end %>
+              </div>
             </div>
             <div class="review-body">
               <%= r.comment.present? ? simple_format(r.comment) : 'コメントなし' %>

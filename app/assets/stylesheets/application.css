@@ -92,10 +92,18 @@ img {
   flex-wrap: wrap;
 }
 
+.site-header__links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
 .brand-link {
   color: var(--app-text);
-  font-size: 1.1rem;
-  font-weight: 800;
+  font-size: 1.18rem;
+  font-weight: 900;
+  letter-spacing: 0.01em;
 }
 
 .nav-link,
@@ -202,6 +210,122 @@ img {
 .btn-ghost:hover {
   background: #fff;
   color: var(--app-primary);
+}
+
+.auth-page {
+  min-height: calc(100vh - 204px);
+  display: grid;
+  place-items: center;
+  padding: 42px 20px 0;
+  background:
+    radial-gradient(circle at 76% 18%, rgba(37, 99, 235, 0.08), transparent 28%),
+    radial-gradient(circle at 22% 82%, rgba(129, 140, 248, 0.08), transparent 30%);
+}
+
+.auth-card {
+  width: min(408px, 100%);
+  padding: 28px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.98));
+  box-shadow: var(--app-shadow);
+}
+
+.auth-card__header {
+  margin-bottom: 20px;
+}
+
+.auth-card__header h1 {
+  margin: 0;
+  color: var(--app-text);
+  font-size: 1.76rem;
+  line-height: 1.25;
+}
+
+.auth-card__header p:not(.eyebrow) {
+  margin: 8px 0 0;
+  color: var(--app-muted);
+  font-size: 0.9rem;
+}
+
+.auth-form {
+  display: grid;
+  gap: 13px;
+}
+
+.auth-field label {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--app-text);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.auth-field input {
+  width: 100%;
+  min-height: 42px;
+  padding: 8px 12px;
+  border: 1px solid var(--app-border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--app-text);
+  font: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-field input:focus {
+  border-color: var(--app-primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+  outline: none;
+}
+
+.auth-actions {
+  margin-top: 2px;
+}
+
+.auth-submit {
+  width: 100%;
+}
+
+.auth-demo {
+  margin-top: 18px;
+  padding: 12px;
+  border: 1px solid rgba(37, 99, 235, 0.09);
+  border-radius: 8px;
+  background: rgba(37, 99, 235, 0.025);
+}
+
+.auth-demo p {
+  margin: 0 0 8px;
+  color: var(--app-muted);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.auth-demo dl {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+}
+
+.auth-demo dl div {
+  display: grid;
+  gap: 2px;
+}
+
+.auth-demo dt {
+  color: var(--app-text);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.auth-demo dd {
+  margin: 0;
+  color: var(--app-muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.76rem;
+  line-height: 1.5;
 }
 
 .home-page {
@@ -344,35 +468,6 @@ img {
   line-height: 1.3;
 }
 
-.mini-card-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.mini-work-card {
-  min-height: 116px;
-  padding: 18px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid var(--app-border);
-  border-radius: 8px;
-  background: var(--app-surface);
-  box-shadow: var(--app-shadow);
-}
-
-.mini-work-card__title {
-  color: var(--app-text);
-  font-weight: 800;
-  line-height: 1.45;
-}
-
-.mini-work-card__meta {
-  color: var(--app-muted);
-  font-size: 0.86rem;
-}
-
 .feature-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -380,21 +475,58 @@ img {
 }
 
 .feature-item {
-  padding: 22px;
+  position: relative;
+  min-height: 184px;
+  overflow: hidden;
+  padding: 24px;
   border: 1px solid var(--app-border);
   border-radius: 8px;
-  background: var(--app-surface);
+  background:
+    radial-gradient(circle at 92% 10%, rgba(37, 99, 235, 0.12), transparent 28%),
+    linear-gradient(180deg, #fff, #f8fafc);
+  box-shadow: var(--app-shadow);
+}
+
+.feature-item::after {
+  content: "";
+  position: absolute;
+  right: -26px;
+  bottom: -34px;
+  width: 130px;
+  height: 130px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.feature-item__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  height: 28px;
+  margin-bottom: 22px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.1);
+  color: var(--app-primary);
+  font-size: 0.74rem;
+  font-weight: 900;
 }
 
 .feature-item h3 {
-  margin: 0 0 8px;
-  font-size: 1rem;
+  position: relative;
+  z-index: 1;
+  margin: 0 0 10px;
+  color: var(--app-text);
+  font-size: 1.08rem;
 }
 
 .feature-item p {
+  position: relative;
+  z-index: 1;
   margin: 0;
   color: var(--app-muted);
   font-size: 0.94rem;
+  line-height: 1.75;
 }
 
 .empty-message {
@@ -413,6 +545,15 @@ img {
 
   .home-page {
     padding: 16px 14px 0;
+  }
+
+  .auth-page {
+    min-height: auto;
+    padding: 28px 14px 0;
+  }
+
+  .auth-card {
+    padding: 24px;
   }
 
   .home-hero {
@@ -441,7 +582,6 @@ img {
     font-size: 2rem;
   }
 
-  .mini-card-grid,
   .feature-strip {
     grid-template-columns: 1fr;
   }

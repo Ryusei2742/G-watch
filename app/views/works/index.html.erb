@@ -71,8 +71,19 @@
           else
             'default'
           end %>
-        <article class="work-card">
-          <%= link_to work_path(work), class: ["work-card__image", ("work-card__image--placeholder work-card__image--#{placeholder_tone}" unless work.thumbnail.present?)].compact.join(" ") do %>
+        <% average_rating = work.reviews.average(:rating)&.round(1) %>
+        <% review_count = work.reviews.count %>
+        <% average_stars = average_rating.present? ? average_rating.to_f.round.clamp(0, 5) : nil %>
+        <% series_class =
+          if work.series.to_s.include?('宇宙世紀')
+            'series-tag--uc'
+          elsif work.series.to_s.include?('オルタナティブ')
+            'series-tag--alternative'
+          else
+            'series-tag--default'
+          end %>
+        <%= link_to work_path(work), class: "work-card", aria: { label: "#{work.title.presence || '作品'}の詳細を見る" } do %>
+          <div class="<%= ["work-card__image", ("work-card__image--placeholder work-card__image--#{placeholder_tone}" unless work.thumbnail.present?)].compact.join(" ") %>">
             <% if work.thumbnail.present? %>
               <%= image_tag("thumbnails/#{work.thumbnail}", alt: "#{work.title}のサムネイル") %>
             <% else %>
@@ -80,31 +91,35 @@
                 <span class="work-card__placeholder-mark"><%= placeholder_label %></span>
               </span>
             <% end %>
-          <% end %>
+          </div>
 
           <div class="work-card__body">
             <div class="work-card__topline">
-              <span class="work-card__series"><%= work.series.presence || "シリーズ未設定" %></span>
+              <span class="work-card__series series-tag <%= series_class %>"><%= work.series.presence || "シリーズ未設定" %></span>
               <span class="work-card__year"><%= work.year.presence || "-" %></span>
             </div>
 
-            <h2><%= link_to work.title.presence || "タイトル未設定", work_path(work) %></h2>
+            <h2><%= work.title.presence || "タイトル未設定" %></h2>
 
             <div class="work-card__footer">
               <span class="score-pill">
-                おすすめ度
-                <strong>
-                  <% if work.recommended.present? %>
-                    <%= number_with_precision(work.recommended, precision: 1) %>
-                  <% else %>
-                    -
-                  <% end %>
-                </strong>
+                <span class="score-label">平均評価</span>
+                <% if average_rating.present? %>
+                  <span class="score-value">
+                    <span class="score-stars"><%= '★' * average_stars %><%= '☆' * (5 - average_stars) %></span>
+                    <strong><%= number_with_precision(average_rating, precision: 1) %></strong>
+                  </span>
+                <% else %>
+                  <strong>
+                    未評価
+                  </strong>
+                <% end %>
+                <span class="review-count"><%= review_count %>件</span>
               </span>
-              <%= link_to "詳細を見る", work_path(work), class: "work-card__more" %>
+              <span class="work-card__more">詳細へ</span>
             </div>
           </div>
-        </article>
+        <% end %>
       <% end %>
     <% else %>
       <p class="empty-message">まだ作品が登録されていません。</p>

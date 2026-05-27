@@ -24,38 +24,21 @@
     </div>
   </section>
 
-  <section class="home-section">
-    <div class="section-heading">
-      <p class="eyebrow">Recommended</p>
-      <h2>おすすめ作品</h2>
-    </div>
-
-    <% if @recommended_works.any? %>
-      <div class="mini-card-grid">
-        <% @recommended_works.each do |work| %>
-          <%= link_to work_path(work), class: "mini-work-card" do %>
-            <span class="mini-work-card__title"><%= work.title.presence || "タイトル未設定" %></span>
-            <span class="mini-work-card__meta"><%= work.series.presence || "シリーズ未設定" %></span>
-          <% end %>
-        <% end %>
-      </div>
-    <% else %>
-      <p class="empty-message">おすすめ作品は現在ありません。</p>
-    <% end %>
-  </section>
-
   <section class="home-section feature-strip">
     <div class="feature-item">
-      <h3>作品を一覧で確認</h3>
-      <p>シリーズや公開年を見ながら、気になる作品の詳細へ移動できます。</p>
+      <span class="feature-item__number">01</span>
+      <h3>作品を探す</h3>
+      <p>シリーズや公開年、おすすめ度を見ながら、気になる作品を一覧から探せます。</p>
     </div>
     <div class="feature-item">
+      <span class="feature-item__number">02</span>
       <h3>レビューを投稿</h3>
-      <p>視聴ステータス、評価、コメントを作品ごとに記録できます。</p>
+      <p>作品詳細から評価とコメントを残し、自分の視聴体験を作品ごとに記録できます。</p>
     </div>
     <div class="feature-item">
-      <h3>管理者で作品管理</h3>
-      <p>管理者ユーザーは作品の作成、編集、削除を行えます。</p>
+      <span class="feature-item__number">03</span>
+      <h3>マイレビューで振り返る</h3>
+      <p>投稿したレビューを一覧で確認し、見た作品や感想をあとから振り返れます。</p>
     </div>
   </section>
 </div>

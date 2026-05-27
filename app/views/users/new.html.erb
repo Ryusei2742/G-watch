@@ -1,27 +1,39 @@
-<h1>ユーザー登録</h1>
+<div class="auth-page">
+  <section class="auth-card auth-card--signup">
+    <div class="auth-card__header">
+      <p class="eyebrow">Sign Up</p>
+      <h1>ユーザー登録</h1>
+      <p>レビュー投稿と記録機能をはじめましょう。</p>
+    </div>
 
-<%= form_with model: @user, url: signup_path, local: true do |f| %>
-  <div>
-    <%= f.label :name, '名前' %><br>
-    <%= f.text_field :name %>
-  </div>
+    <%= form_with model: @user, url: signup_path, local: true, class: 'auth-form' do |f| %>
+      <div class="auth-field">
+        <%= f.label :name, '名前' %>
+        <%= f.text_field :name, placeholder: 'ゲストユーザー', autocomplete: 'name' %>
+      </div>
 
-  <div>
-    <%= f.label :email, 'メールアドレス' %><br>
-    <%= f.email_field :email %>
-  </div>
+      <div class="auth-field">
+        <%= f.label :email, 'メールアドレス' %>
+        <%= f.email_field :email, placeholder: 'user@example.com', autocomplete: 'email' %>
+      </div>
 
-  <div>
-    <%= f.label :password, 'パスワード' %><br>
-    <%= f.password_field :password %>
-  </div>
+      <div class="auth-field">
+        <%= f.label :password, 'パスワード' %>
+        <%= f.password_field :password, placeholder: 'password', autocomplete: 'new-password' %>
+      </div>
 
-  <div>
-    <%= f.label :password_confirmation, 'パスワード（確認）' %><br>
-    <%= f.password_field :password_confirmation %>
-  </div>
+      <div class="auth-field">
+        <%= f.label :password_confirmation, 'パスワード（確認）' %>
+        <%= f.password_field :password_confirmation, placeholder: 'password', autocomplete: 'new-password' %>
+      </div>
 
-  <div>
-    <%= f.submit '登録する' %>
-  </div>
-<% end %>
+      <div class="auth-actions">
+        <%= f.submit '登録する', class: 'btn btn-primary auth-submit' %>
+      </div>
+    <% end %>
+
+    <p class="auth-switch">
+      すでにアカウントをお持ちの方は <%= link_to 'ログイン', login_path %>
+    </p>
+  </section>
+</div>
