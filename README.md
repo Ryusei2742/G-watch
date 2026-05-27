@@ -74,23 +74,27 @@ bundle exec rspec
 
 ### トップページ
 
-スクリーンショット追加予定
+![トップページ](screenshots/top.png)
 
 ### 作品一覧
 
-スクリーンショット追加予定
+![作品一覧](screenshots/works-index.png)
 
 ### 作品詳細
 
-スクリーンショット追加予定
+![作品詳細](screenshots/work-show.png)
 
 ### マイレビュー
 
-スクリーンショット追加予定
+![マイレビュー](screenshots/reviews.png)
 
-### ログイン / ユーザー登録
+### ログイン
 
-スクリーンショット追加予定
+![ログイン](screenshots/login.png)
+
+### ユーザー登録
+
+![ユーザー登録](screenshots/signup.png)
 
 ---
 
