@@ -1,7 +1,9 @@
 # G-watch
 
-ガンダムシリーズ作品のレビュー共有サービスです。  
+ガンダムシリーズ作品のレビュー共有サービスです。
 作品情報の閲覧、レビュー投稿、平均評価の確認、視聴記録の整理を行えます。
+
+![G-watch トップページ](screenshots/top.png)
 
 ---
 
@@ -9,12 +11,12 @@
 
 G-watch は、ガンダムシリーズ作品の情報閲覧とレビュー投稿ができる Web アプリです。
 
-ガンダムシリーズは作品数が多く、初見ユーザーが「どこから見るべきか」「他ユーザーがどう感じたか」を把握しづらいと感じたことから制作しました。
+ガンダムシリーズは作品数が多く、宇宙世紀やオルタナティブ作品など複数の世界線があります。そのため、初見ユーザーにとっては「どこから見るべきか」「各作品がどのように評価されているか」を把握しづらいと感じたことから制作しました。
 
-G-watch では、作品ごとのレビューや平均評価を一覧化し、シリーズ選びや視聴記録を整理しやすい構成を目指しています。
+G-watch では、作品ごとのレビューや平均評価を確認できるようにし、シリーズ選びや視聴後の感想整理をしやすい構成を目指しています。
 
-- サービスURL: `https://your-app-url.example.com`
-- GitHub: `https://github.com/your-name/G-watch`
+- Service URL: [https://g-watch.onrender.com](https://g-watch.onrender.com)
+- GitHub URL: [https://github.com/Ryusei2742/G-watch](https://github.com/Ryusei2742/G-watch)
 
 ---
 
@@ -35,19 +37,19 @@ G-watch では、作品ごとのレビューや平均評価を一覧化し、シ
 
 | Category | Technology |
 | --- | --- |
-| Backend | Ruby 3.3 / Ruby on Rails 6.1 |
-| Database | PostgreSQL |
-| Frontend | ERB / SCSS |
+| Backend | Ruby 3.3.3 / Ruby on Rails 6.1.7 |
+| Database | PostgreSQL / pg 1.5 |
+| Frontend | ERB / SCSS / Webpacker 5.4 |
 | Infrastructure | Render |
-| Authentication | has_secure_password |
-| Test | RSpec / FactoryBot |
+| Authentication | has_secure_password / session |
+| Test | RSpec 3.13 / FactoryBot |
 
 ---
 
 ## セットアップ
 
 ```bash
-git clone https://github.com/your-name/G-watch.git
+git clone https://github.com/Ryusei2742/G-watch.git
 cd G-watch
 
 bundle install
@@ -98,16 +100,21 @@ bundle exec rspec
 
 ---
 
+## ER図
+
+![ER図](screenshots/er-diagram.png)
+
+---
+
 ## 工夫した点
 
-- レビュー投稿時に `user_id` をフォームから受け取らず、ログイン中ユーザーへ自動紐付けする構成にしました。
-- 一覧画面の並び替え処理を controller 側へ移動し、view ロジックを整理しました。
-- 作品一覧ではカードUIを採用し、シリーズごとに抽象的なグラデーションと略称バッジを用いて視認性を改善しました。
-- 作品詳細ページでは、平均評価 → レビュー本文へ自然に視線が流れるよう情報設計を調整しました。
-- レビュー一覧では情報密度と可読性を意識し、2カラムレイアウトと compact なレビューカードUIへ改善しました。
-- ログイン / ユーザー登録画面は、全体UIトーンに合わせて統一感のあるフォームデザインへ調整しました。
-- 管理者機能と一般ユーザー機能を分離し、作品管理とレビュー投稿の責務を整理しました。
-- RSpec による request spec / model spec を導入し、主要機能の動作確認を行っています。
+- レビュー投稿時に `user_id` をフォームから受け取らず、`current_user` に紐づけて作成する設計にしました。
+- 作品一覧の並び替えは `WorksController#index` 側で行い、view は表示責務に寄せました。
+- 作品詳細ではレビューの平均評価とレビュー件数を表示し、レビューアプリとして必要な情報を優先して見せています。
+- 管理者のみ作品の作成 / 編集 / 削除を行えるようにし、一般ユーザーのレビュー投稿機能と役割を分離しました。
+- 作品一覧、作品詳細、マイレビュー、認証画面のUIをSCSSで整え、画像がない作品でも略称バッジと抽象プレースホルダーで見やすくしました。
+- カードUIやバッジUIは画面ごとにclass命名を整理し、一覧・詳細・レビュー画面でデザインの統一感を持たせました。
+- RSpec の request spec / model spec を導入し、作品管理やレビュー投稿まわりの主要動作を確認できるようにしました。
 
 ---
 
@@ -117,8 +124,5 @@ bundle exec rspec
 - ページネーション機能
 - レビュー編集機能
 - お気に入り機能
-- タグ分類機能
 - レスポンシブUIのさらなる最適化
 - テスト範囲の拡充
-- ER図の追加
-- 画面スクリーンショットの追加
